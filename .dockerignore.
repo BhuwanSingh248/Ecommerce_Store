@@ -1,0 +1,6 @@
+*/venv
+*/.history
+*/.gitignore
+*/.coverage
+*/__pycache__
+*/migrations
