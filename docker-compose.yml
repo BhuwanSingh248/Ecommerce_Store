@@ -1,0 +1,11 @@
+version: "3.8"
+services: 
+  app:
+    build: .
+    volumes: 
+      - .:/ecomm
+    ports: 
+      - 8000:8000
+    image: ecommstore:djangoecommapp
+    container_name: ecomm_container
+    command: python manage.py runserver 0.0.0.0:8000
