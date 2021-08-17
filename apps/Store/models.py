@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.base import Model
-from django.contrib.auth.models import User
 from django.urls import reverse
-from PIL import Image
+
 # from .views import category_list
 # category table 
+
+class ProductManager(models.Manager):
+    def get_queryset(self):
+        return super(ProductManager, self).get_queryset().filter(is_active=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=255, db_index=True)
@@ -26,13 +30,15 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, default='admin')
     description  =models.TextField(blank=True)
-    image = models.ImageField(upload_to = 'images/')
+    image = models.ImageField(upload_to = 'images/', default='images/default.jpg')
     slug = models.SlugField(max_length=255, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     in_stock = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)
     create = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
+    objects = models.Manager()
+    products = ProductManager()
 
     class meta:
         verbose_name_plural = 'Products'
@@ -41,12 +47,6 @@ class Product(models.Model):
     def get_absolute_url(self): 
         return reverse("Store:product_details", kwargs={"slug": self.slug})
     
-
-    # save image as same size for all 
-
-    # def save(self, *args, **kwargs):
-    #     self.image = Image.open(self.image.path).resize((400,300), Image.ANTIALIAS)
-    #     super(Product, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.title
