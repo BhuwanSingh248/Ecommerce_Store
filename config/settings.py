@@ -55,6 +55,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'apps.Store.context_processor.categories',
+                'apps.basket.context_processors.basket',
             ],
         },
     },
